@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greedy Dice</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Game Setup Screen -->
+        <div id="setup-screen" class="screen active">
+            <div class="setup-container">
+                <h1>Greedy Dice</h1>
+                <div class="setup-form">
+                    <div class="form-group">
+                        <label for="player-count">Number of Players (1-6):</label>
+                        <input type="number" id="player-count" min="1" max="6" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="winning-score">Winning Score:</label>
+                        <input type="number" id="winning-score" value="10000" step="1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="minimum-bank">Minimum Bank Score:</label>
+                        <input type="number" id="minimum-bank" value="1000" step="100">
+                    </div>
+                    <div id="player-names-container">
+                        <h3>Player Names:</h3>
+                        <div id="player-names">
+                            <input type="text" class="player-name" placeholder="Player 1" data-player="0">
+                            <input type="text" class="player-name" placeholder="Player 2" data-player="1">
+                        </div>
+                    </div>
+                    <button id="start-game-btn" class="primary-btn">Start Game</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="game-info">
+                    <div class="current-turn">
+                        <span>Current Player: </span>
+                        <span id="current-player-name">Player 1</span>
+                    </div>
+                    <div class="game-stats">
+                        <span>Winning Score: <span id="display-winning-score">10000</span></span>
+                        <span>Minimum Bank: <span id="display-minimum-bank">1000</span></span>
+                    </div>
+                </div>
+                <button id="new-game-btn" class="secondary-btn">New Game</button>
+            </div>
+
+            <div class="game-content">
+                <!-- Scoreboard -->
+                <div class="scoreboard">
+                    <h3>Scoreboard</h3>
+                    <div id="player-scores"></div>
+                </div>
+
+                <!-- Dice Area -->
+                <div class="dice-area">
+                    <div class="turn-info">
+                        <div class="turn-score">
+                            <span>Turn Score: </span>
+                            <span id="turn-score">0</span>
+                        </div>
+                        <div class="banked-score">
+                            <span>Banked Score: </span>
+                            <span id="banked-score">0</span>
+                        </div>
+                    </div>
+
+                    <div id="dice-container">
+                        <div class="dice die" data-index="0">
+                            <div class="die-face">1</div>
+                        </div>
+                        <div class="dice die" data-index="1">
+                            <div class="die-face">1</div>
+                        </div>
+                        <div class="dice die" data-index="2">
+                            <div class="die-face">1</div>
+                        </div>
+                        <div class="dice die" data-index="3">
+                            <div class="die-face">1</div>
+                        </div>
+                        <div class="dice die" data-index="4">
+                            <div class="die-face">1</div>
+                        </div>
+                        <div class="dice die" data-index="5">
+                            <div class="die-face">1</div>
+                        </div>
+                        <div class="dice die" data-index="6">
+                            <div class="die-face">1</div>
+                        </div>
+                        <div class="dice die" data-index="7">
+                            <div class="die-face">1</div>
+                        </div>
+                    </div>
+
+                    <div class="game-controls">
+                        <button id="roll-dice-btn" class="primary-btn">Roll All Dice</button>
+                        <button id="bank-points-btn" class="success-btn" disabled>Bank Points</button>
+                        <button id="and-rolling-btn" class="warning-btn" disabled>And Rolling</button>
+                        <button id="end-turn-btn" class="secondary-btn" disabled>End Turn</button>
+                    </div>
+
+                    <div class="game-messages">
+                        <div id="message-display"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen">
+            <div class="game-over-container">
+                <h1>Game Over!</h1>
+                <div id="winner-announcement"></div>
+                <div id="final-scores"></div>
+                <button id="play-again-btn" class="primary-btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="dice.js"></script>
+    <script src="game.js"></script>
+    <script src="ui.js"></script>
+</body>
+</html>

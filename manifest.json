@@ -1,0 +1,70 @@
+{
+    "name": "Greedy Dice",
+    "short_name": "GreedyDice",
+    "description": "A fun multiplayer dice game for 1-6 players featuring strategic scoring and banking mechanics.",
+    "version": "1.0.0",
+    "start_url": "index.html",
+    "display": "standalone",
+    "orientation": "any",
+    "theme_color": "#1e3c72",
+    "background_color": "#2a5298",
+    "lang": "en",
+    "scope": "./",
+    "icons": [
+        {
+            "src": "icons/icon-72.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-152.png",
+            "sizes": "152x152",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "categories": ["games", "entertainment"],
+    "screenshots": [
+        {
+            "src": "screenshots/screenshot-1.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "label": "Game setup screen"
+        },
+        {
+            "src": "screenshots/screenshot-2.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "label": "Gameplay with dice rolling"
+        }
+    ]
+}

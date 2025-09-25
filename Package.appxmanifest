@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         IgnorableNamespaces="uap mp">
+
+  <Identity Name="GreedyDice"
+            Publisher="CN=YourPublisherName"
+            Version="1.0.0.0" />
+
+  <mp:PhoneIdentity PhoneProductId="greedy-dice-game" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>Greedy Dice</DisplayName>
+    <PublisherDisplayName>YourPublisherName</PublisherDisplayName>
+    <Logo>images\StoreLogo.png</Logo>
+    <Description>A fun multiplayer dice game for 1-6 players featuring strategic scoring and banking mechanics. Roll dice, score points, and be the first to reach 10,000 points to win!</Description>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+                 Executable="$targetnametoken$.exe"
+                 EntryPoint="GreedyDice.App">
+      <uap:VisualElements
+          DisplayName="Greedy Dice"
+          Square150x150Logo="images\Square150x150Logo.png"
+          Square44x44Logo="images\Square44x44Logo.png"
+          BackgroundColor="#2a5298"
+          Description="A fun multiplayer dice game for 1-6 players">
+        <uap:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png"/>
+        <uap:SplashScreen Image="images\SplashScreen.png" BackgroundColor="#1e3c72"/>
+      </uap:VisualElements>
+
+      <Extensions>
+        <Extension Category="windows.webAccountProvider">
+          <uap:WebAccountProvider Url="ms-appx-web:///" />
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>
