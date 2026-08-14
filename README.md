@@ -41,10 +41,9 @@ so it can be opened straight from disk or served by any static host.
 
 ## Buy Me A Coffee
 
-I developed this while I currently looking for work. If this app has helped you or someone you know, please consider donating via [Square](https://square.link/u/s65oGR5f). I appreciate it.
+I developed this while I currently looking for work. If this app has helped you or someone you know, please consider donating via [Stripe](https://donate.stripe.com/00w5kD3Gj1Xo9v7gVOcs800). I appreciate it.
 
-The floating card in the app points at Stripe instead - see [Donate link](#donate-link)
-below if you want the two to match.
+This is the same link the floating donate card in the app uses.
 
 ## Running locally
 
