@@ -2,8 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Greedy Dice</title>
+    <meta name="description" content="Greedy Dice is a push-your-luck dice game for 1-6 players. Hold scoring dice, press your luck, and bank points before you bust.">
+    <meta name="theme-color" content="#1e3c72">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Greedy Dice">
+    <meta property="og:description" content="A push-your-luck dice game for 1-6 players. First to 10,000 points wins.">
+    <meta property="og:image" content="https://greedy-dice-test.vercel.app/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -32,6 +46,7 @@
                             <input type="text" class="player-name" placeholder="Player 2" data-player="1">
                         </div>
                     </div>
+                    <div id="setup-message" class="setup-message" style="display: none;" role="alert"></div>
                     <button id="start-game-btn" class="primary-btn">Start Game</button>
                 </div>
             </div>
@@ -125,8 +140,23 @@
         </div>
     </div>
 
+    <aside id="donate-widget" class="donate-widget" hidden>
+        <button type="button" class="donate-close" aria-label="Dismiss donation message">&times;</button>
+        <a class="donate-qr" href="https://donate.stripe.com/00w5kD3Gj1Xo9v7gVOcs800"
+           target="_blank" rel="noopener noreferrer" aria-label="Donate via Stripe"></a>
+        <div class="donate-body">
+            <p class="donate-text">If this app, code, or repository has helped you or someone you
+                know, please consider donating. I appreciate any help to offset the costs of
+                development and/or AI Credits.</p>
+            <a class="donate-link" href="https://donate.stripe.com/00w5kD3Gj1Xo9v7gVOcs800"
+               target="_blank" rel="noopener noreferrer">Donate via Stripe &rarr;</a>
+        </div>
+    </aside>
+
     <script src="dice.js"></script>
     <script src="game.js"></script>
     <script src="ui.js"></script>
+    <script src="qr.js"></script>
+    <script src="donate.js"></script>
 </body>
 </html>

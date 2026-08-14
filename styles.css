@@ -89,8 +89,38 @@ body {
     text-align: center;
 }
 
-.player-name {
-    margin-bottom: 0.5rem !important;
+/* The name inputs are built in JS outside .form-group, so they need their own
+   copy of the field styling. Scoped by id because .player-name is also the
+   scoreboard label. */
+#player-names {
+    display: grid;
+    gap: 0.5rem;
+}
+
+#player-names .player-name {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+#player-names .player-name:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.setup-message {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(255, 107, 107, 0.25);
+    border: 1px solid #ff6b6b;
 }
 
 /* Buttons */
@@ -227,9 +257,13 @@ button:disabled {
 
 .player-name {
     font-weight: 600;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .player-score-value {
+    flex: 0 0 auto;
+    margin-left: 0.75rem;
     font-size: 1.1rem;
     font-weight: 700;
 }
@@ -607,6 +641,139 @@ button:disabled {
 
     .screen {
         padding: 10px;
+    }
+}
+
+/* Floating donate card */
+.donate-widget {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 1000;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    width: 330px;
+    max-width: calc(100vw - 32px);
+    padding: 14px 30px 14px 14px;
+    background: #ffffff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+    user-select: text;
+    animation: donate-in 0.35s ease;
+}
+
+/* The class rule above would otherwise defeat the hidden attribute. */
+.donate-widget[hidden] {
+    display: none;
+}
+
+@keyframes donate-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .donate-widget { animation: none; }
+}
+
+.donate-qr {
+    flex: 0 0 auto;
+    display: block;
+    width: 88px;
+    height: 88px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.donate-qr svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.donate-body {
+    min-width: 0;
+}
+
+.donate-text {
+    margin: 0 0 8px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+.donate-link {
+    display: inline-block;
+    color: #1a7f37;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.donate-link:hover,
+.donate-link:focus-visible {
+    text-decoration: underline;
+}
+
+/* Reset the global button styling, which is built for the game's controls. */
+.donate-close {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    color: #5f6368;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    cursor: pointer;
+}
+
+.donate-close:hover {
+    background: #f1f3f4;
+    color: #202124;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .donate-close {
+        width: 40px;
+        height: 40px;
+        font-size: 1.35rem;
+    }
+}
+
+.donate-widget :focus-visible {
+    outline: 2px solid #1a7f37;
+    outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+    .donate-widget {
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        width: auto;
+        max-width: none;
+        /* Room for the larger touch-sized close button. */
+        padding-right: 48px;
+    }
+
+    /* On a phone the QR is redundant - the link is one tap away. */
+    .donate-qr {
+        display: none;
     }
 }
 

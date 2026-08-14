@@ -50,21 +50,13 @@
             "src": "icons/icon-512.png",
             "sizes": "512x512",
             "type": "image/png"
-        }
-    ],
-    "categories": ["games", "entertainment"],
-    "screenshots": [
-        {
-            "src": "screenshots/screenshot-1.png",
-            "sizes": "1280x720",
-            "type": "image/png",
-            "label": "Game setup screen"
         },
         {
-            "src": "screenshots/screenshot-2.png",
-            "sizes": "1280x720",
+            "src": "icons/icon-maskable-512.png",
+            "sizes": "512x512",
             "type": "image/png",
-            "label": "Gameplay with dice rolling"
+            "purpose": "maskable"
         }
-    ]
+    ],
+    "categories": ["games", "entertainment"]
 }

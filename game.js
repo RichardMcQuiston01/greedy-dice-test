@@ -12,12 +12,18 @@ class GreedyDiceGame {
         this.turnScore = 0;
         this.andRollingBankedScore = 0; // Points banked from previous "And Rolling" actions
         this.hasRolled = false;
+        this.turnScoreAtLastRoll = 0; // Turn score as it stood after the last roll
         this.gameOver = false;
         this.winner = null;
     }
 
     setupGame(playerNames, winningScore, minimumBank) {
-        this.players = playerNames.map((name, index) => ({
+        const names = Array.isArray(playerNames) ? playerNames.slice(0, 6) : [];
+        if (names.length === 0) {
+            return false;
+        }
+
+        this.players = names.map((name, index) => ({
             name: name || `Player ${index + 1}`,
             score: 0,
             hasReachedMinimum: false,
@@ -30,6 +36,7 @@ class GreedyDiceGame {
         this.players[this.currentPlayerIndex].isActive = true;
         this.gameState = 'playing';
         this.resetTurn();
+        return true;
     }
 
     determineStartingPlayer() {
@@ -53,12 +60,30 @@ class GreedyDiceGame {
         return startingPlayers[Math.floor(Math.random() * startingPlayers.length)];
     }
 
-    rollDice() {
-        const availableDice = this.heldDice.map((held, index) => !held ? index : -1).filter(i => i !== -1);
-
-        if (availableDice.length === 0) {
+    /**
+     * Rule 6: before rolling again a player must set aside one or more *scoring*
+     * dice from the roll they just made. Testing the turn score rather than a
+     * count of held dice is what makes that precise - holding one die out of a
+     * three-of-a-kind adds nothing, and rolling on would strand the pair in a
+     * spent roll group where it can never score.
+     */
+    canRoll() {
+        const availableDice = this.heldDice.filter(held => !held).length;
+        if (availableDice === 0) {
             return false;
         }
+        if (!this.hasRolled) {
+            return true;
+        }
+        return this.turnScore > this.turnScoreAtLastRoll;
+    }
+
+    rollDice() {
+        if (!this.canRoll()) {
+            return false;
+        }
+
+        const availableDice = this.heldDice.map((held, index) => !held ? index : -1).filter(i => i !== -1);
 
         // If this is not the first roll of the turn and we have held dice, increment roll group
         if (this.hasRolled && this.heldDice.some(held => held)) {
@@ -71,6 +96,7 @@ class GreedyDiceGame {
         });
 
         this.hasRolled = true;
+        this.turnScoreAtLastRoll = this.turnScore;
         return true;
     }
 
@@ -197,47 +223,59 @@ class GreedyDiceGame {
         return score;
     }
 
+    /**
+     * Faces for which the player has already completed a three-of-a-kind within
+     * a single roll. Scoring only awards the set bonus inside one roll group, so
+     * this uses the same grouping - otherwise the game would offer holds that
+     * can never score.
+     */
+    getEstablishedTripleFaces() {
+        const countsByGroup = {};
+
+        this.diceValues.forEach((value, index) => {
+            if (!this.heldDice[index]) return;
+            const group = this.diceRollGroup[index];
+            if (!countsByGroup[group]) {
+                countsByGroup[group] = [0, 0, 0, 0, 0, 0, 0];
+            }
+            countsByGroup[group][value]++;
+        });
+
+        const faces = [];
+        Object.keys(countsByGroup).forEach(group => {
+            for (let face = 1; face <= 6; face++) {
+                if (countsByGroup[group][face] >= 3 && faces.indexOf(face) === -1) {
+                    faces.push(face);
+                }
+            }
+        });
+        return faces;
+    }
+
     getAvailableDiceToHold() {
         const availableDice = [];
 
-        // Count all dice (held and available)
-        const allCounts = [0, 0, 0, 0, 0, 0, 0];
+        // Every unheld die came from the same roll, so counting them is the same
+        // as counting three-of-a-kinds within the current roll.
         const availableCounts = [0, 0, 0, 0, 0, 0, 0];
-        const heldCounts = [0, 0, 0, 0, 0, 0, 0];
-
         this.diceValues.forEach((value, index) => {
-            allCounts[value]++;
-            if (this.heldDice[index]) {
-                heldCounts[value]++;
-            } else {
+            if (!this.heldDice[index]) {
                 availableCounts[value]++;
             }
         });
 
+        const establishedTriples = this.getEstablishedTripleFaces();
+
         this.diceValues.forEach((value, index) => {
-            if (!this.heldDice[index]) {
-                let canHold = false;
+            if (this.heldDice[index]) return;
 
-                // Always allow 1s and 5s
-                if (value === 1 || value === 5) {
-                    canHold = true;
-                }
-                // Allow if we have 3 or more of this value available to roll
-                else if (availableCounts[value] >= 3) {
-                    canHold = true;
-                }
-                // Allow if we already have held dice of this value and together make 3+
-                else if (heldCounts[value] > 0 && (heldCounts[value] + availableCounts[value]) >= 3) {
-                    canHold = true;
-                }
-                // Allow if we already have 3+ held of this value (additional dice worth 50)
-                else if (heldCounts[value] >= 3) {
-                    canHold = true;
-                }
+            const canHold =
+                value === 1 || value === 5 ||               // always worth points alone
+                availableCounts[value] >= 3 ||              // three of a kind in this roll
+                establishedTriples.indexOf(value) !== -1;   // adds 50 to a set already held
 
-                if (canHold) {
-                    availableDice.push(index);
-                }
+            if (canHold) {
+                availableDice.push(index);
             }
         });
 
@@ -269,11 +307,6 @@ class GreedyDiceGame {
         const currentHeldScore = this.calculateScore();
         // Add the score banked from previous "And Rolling" actions
         this.turnScore = this.andRollingBankedScore + currentHeldScore;
-    }
-
-    canContinueRolling() {
-        const availableDice = this.heldDice.filter(held => !held).length;
-        return availableDice > 0 && this.getAvailableDiceToHold().some(index => this.heldDice[index]);
     }
 
     canBankPoints() {
@@ -310,7 +343,8 @@ class GreedyDiceGame {
 
         // Release all dice for rolling again
         this.heldDice = [false, false, false, false, false, false, false, false];
-        this.hasRolled = false; // Ready to roll again
+        this.hasRolled = false; // Ready to roll again, so rule 6 restarts
+        this.turnScoreAtLastRoll = this.andRollingBankedScore;
         this.currentRollGroup++;
 
         // Keep turnScore showing the banked amount for UI consistency
@@ -344,17 +378,26 @@ class GreedyDiceGame {
         return true;
     }
 
+    /**
+     * A roll is a bust when none of the dice still in play may be set aside.
+     * Deferring to getAvailableDiceToHold() keeps this in step with the hold
+     * rules - scoring a die off a three-of-a-kind already held counts, so
+     * rolling a fourth matching die is not a bust.
+     */
     checkForBust() {
-        const availableDice = this.diceValues.filter((value, index) => !this.heldDice[index]);
-        const score = this.calculateScore(availableDice);
-        return score === 0;
+        const availableDice = this.heldDice.filter(held => !held).length;
+        if (availableDice === 0) {
+            return false;
+        }
+        return this.getAvailableDiceToHold().length === 0;
     }
 
+    /**
+     * Ends the turn without banking - the turn score is forfeited. Callers are
+     * responsible for confirming that with the player; bankPoints() is the path
+     * that keeps the points.
+     */
     endTurn() {
-        if (this.hasRolled && this.checkForBust()) {
-            this.turnScore = 0;
-        }
-
         this.resetTurn();
         this.nextPlayer();
     }
@@ -367,6 +410,7 @@ class GreedyDiceGame {
         this.turnScore = 0;
         this.andRollingBankedScore = 0; // Reset banked "And Rolling" score
         this.hasRolled = false;
+        this.turnScoreAtLastRoll = 0;
     }
 
     nextPlayer() {
@@ -388,6 +432,7 @@ class GreedyDiceGame {
             diceValues: [...this.diceValues],
             heldDice: [...this.heldDice],
             hasRolled: this.hasRolled,
+            canRoll: this.canRoll(),
             canBank: this.canBankPoints(),
             canAndRoll: this.canAndRoll(),
             mustRoll: this.mustRollAgain(),

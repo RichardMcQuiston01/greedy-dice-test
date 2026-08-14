@@ -153,7 +153,6 @@ class DiceRenderer {
         const diceToRoll = this.getDiceToRoll();
         await this.rollDiceAnimation(diceToRoll);
 
-        const gameStatus = game.getGameStatus();
         if (game.checkForBust()) {
             this.shakeDice(diceToRoll);
             return 'bust';
