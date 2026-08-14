@@ -1,8 +1,12 @@
 # greedy-dice-test
 
+**Live demo:** _add the Vercel URL here once the first deploy finishes._
+
 ## Description
 
-Demo of Application for Windows Store built using HTML5 and JavaScript.
+Demo of Application for Windows Store built using HTML5 and JavaScript. It is a
+dependency-free static site - no build step, no framework, no package manager -
+so it can be opened straight from disk or served by any static host.
 
 ## Game Setup
 
@@ -34,3 +38,58 @@ Demo of Application for Windows Store built using HTML5 and JavaScript.
 9. Play continues until a player reaches the Winning Score.
 10. If a Player has achieved the Winning Score, they have won the game.
 11. If the other players agree, Players can continue to play until they end of the round (i.e. the player that plays last before it goes back tot he Starting Player)
+
+## Running locally
+
+There is nothing to install or build. Either open `index.html` directly, or
+serve the folder so the web app manifest and icons resolve:
+
+```
+python3 -m http.server 8000
+# then visit http://localhost:8000
+```
+
+## Deploying to Vercel
+
+Import the repository in Vercel and accept the defaults - framework preset
+**Other**, no build command, output directory the repository root. `vercel.json`
+pins that behaviour along with caching and a couple of security headers.
+
+After the first deploy:
+
+1. Put the deployment URL in the **Live demo** link at the top of this README.
+2. Change the `og:image` meta tag in `index.html` from the relative
+   `og-image.png` to the full `https://<your-domain>/og-image.png`. Some link
+   previewers (Facebook and Slack among them) will not resolve a relative one.
+
+## Project layout
+
+| File | Purpose |
+| --- | --- |
+| `index.html` | Markup for the setup, game, and game-over screens |
+| `game.js` | Rules engine - scoring, holds, busting, banking, turn order |
+| `dice.js` | Dice rendering and roll animation |
+| `ui.js` | Screen switching, controls, and scoreboard |
+| `qr.js` | Small QR encoder used by the donate card |
+| `donate.js` | Floating donate card |
+| `manifest.json` | Web app manifest |
+| `Package.appxmanifest` | Windows Store packaging (unused by the web build) |
+| `tools/make-assets.py` | Regenerates `icons/` and `og-image.png` |
+
+### Assets
+
+The icons and the social preview image are generated rather than hand-drawn, so
+they stay in step if the palette changes:
+
+```
+pip install pillow
+python3 tools/make-assets.py
+```
+
+### Donate link
+
+The donate card's URL lives in one place - `DONATE_URL` at the top of
+`donate.js`. The QR code is encoded from that value at runtime, so changing the
+link is a one-line edit and the QR cannot fall out of sync with it. Update the
+two `href` attributes on `#donate-widget` in `index.html` to match, which are
+what a visitor gets if scripts are blocked.

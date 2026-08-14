@@ -1,0 +1,23 @@
+# Vercel
+.vercel
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Python (tools/make-assets.py)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Windows Store build output
+AppPackages/
+BundleArtifacts/
+bin/
+obj/
+*.appx
+*.appxbundle
+*.appxupload
