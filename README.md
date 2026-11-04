@@ -4,6 +4,8 @@
 - Website: https://richardmcquiston.com/
 - Demo: https://greedy-dice-test.vercel.app
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P1V529Z7ZP)
+
 ## Table of Contents
 
 | [Overview](#overview) | [Getting Started](#getting-started) | [Project Layout](#project-layout) | [Buy Me a Coffee](#buy-me-a-coffee) | [License](#license) | [Copyright](#copyright) |
@@ -80,9 +82,7 @@ The donate link lives in `DONATE_URL` at the top of `donate.js`. The card builds
 
 If this app, code, or repository has helped you or someone you know, please consider donating. I appreciate any help to offset the costs of development and/or AI Credits.
 
-[**Donate via PayPal**](https://www.paypal.com/ncp/payment/SA7A5KFMFCC6S), or scan:
-
-<a href="https://www.paypal.com/ncp/payment/SA7A5KFMFCC6S"><img src="./donate.png" alt="Donate via PayPal" width="180"></a>
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P1V529Z7ZP)
 
 [Back to Top](#table-of-contents)
 
