@@ -6,7 +6,7 @@
 (function () {
     'use strict';
 
-    const DONATE_URL = 'https://www.paypal.com/ncp/payment/SA7A5KFMFCC6S';
+    const DONATE_URL = 'https://ko-fi.com/P1V529Z7ZP';
     const DISMISS_KEY = 'greedy-dice:donate-dismissed';
 
     // localStorage throws in some privacy modes; the widget must still work.
